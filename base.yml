@@ -1,0 +1,15 @@
+proposal-in-Apache: https://cwiki.apache.org/confluence/display/incubator/beamproposal#
+
+
+PCollection: abstraction on stream or batch data
+Transforms: N PCollections in, N PCollections out
+ParDo: Core operation, invoke UDF on each element of PCollection
+Pipeline I/O: connectors let you read data into your pipeline and write output data from
+Aggregation: group all elements with a common key and window, then associative, commutative f
+User-defined functions (UDFs): A pipeline might contain UDFs written in a different language than the language of your runner. A pipeline might also contain UDFs written in multiple languages.
+  ParDo: operation to apply to every element
+  Combine: how values should be combined.
+Runner: software that accepts a pipeline and executes it
+Sink: transform that writes to an external data storage system, like a file or a database.
+Event time: timestamp on the data element, contrast with process time
+Windowing:

@@ -141,19 +141,23 @@ python -m apache_beam.examples.wordcount \
     --temp_location $BUCKET_NAME/tmp
 ```
 
-```shell
-# As part of the initial setup, install Google Cloud Platform specific extra components. Make sure you
-# complete the setup steps at /documentation/runners/dataflow/#setup
-GOOGLE-ZONE:
-GOOGLE-PROJECT:
 
-pip install apache-beam[gcp]
-python -m apache_beam.examples.wordcount --input gs://dataflow-samples/shakespeare/kinglear.txt \
-                                         --output gs://<your-gcs-bucket>/counts \
-                                         --runner DataflowRunner \
-                                         --project $PROJECT \
-                                         --region $REGION \
-                                         --temp_location gs://<your-gcs-bucket>/tmp/
+### Modify code
+
+Do a run with Direct Runner
+```shell
+python wordcount.py --output outputs
+more outputs*
+```
+
+Now add a Map to lowercase the words in the stream
+```python
+counts = (
+        lines
+        | 'Split' >> (beam.ParDo(WordExtractingDoFn()).with_output_types(str))
+        | 'lowercase' >> beam.Map(str.lower)
+        | 'PairWIthOne' >> beam.Map(lambda x: (x, 1))
+        | 'GroupAndSum' >> beam.CombinePerKey(sum)) 
 ```
 
 
